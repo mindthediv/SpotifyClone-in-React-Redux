@@ -1,6 +1,18 @@
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { searchThunk } from "../redux/actions";
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
+  let query = "";
+  const navigate = useNavigate();
+
+  const clickHandle = (e) => {
+    e.preventDefault();
+    dispatch(searchThunk(query));
+    navigate("/results");
+  };
+
   return (
     <div className="col-2">
       <nav
@@ -10,7 +22,7 @@ const Sidebar = () => {
         <div className="nav-container">
           <Link to={"/"}>
             <img
-              src="../public/logo/Spotify_Logo.png"
+              src="/logo/Spotify_Logo.png"
               alt="Spotify_Logo"
               width="131"
               height="40"
@@ -31,9 +43,9 @@ const Sidebar = () => {
             <div className="navbar-nav">
               <ul>
                 <li>
-                  <a className="nav-item nav-link" href="index.html">
+                  <Link className="nav-link" to={"/"}>
                     <i className="fas fa-home fa-lg"></i>&nbsp; Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a className="nav-item nav-link" href="#">
@@ -46,10 +58,13 @@ const Sidebar = () => {
                     <input
                       type="text"
                       className="form-control mb-2"
-                      id="searchField"
                       placeholder="Search"
                       aria-label="Search"
                       aria-describedby="basic-addon2"
+                      onChange={(e) => {
+                        query = e.target.value;
+                        console.log(query);
+                      }}
                     />
                     <div
                       className="input-group-append"
@@ -58,8 +73,7 @@ const Sidebar = () => {
                       <button
                         className="btn btn-outline-secondary"
                         type="button"
-                        id="button-addon1"
-                        // onClick="search()"
+                        onClick={clickHandle}
                       >
                         GO
                       </button>

@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { rockThunk, popThunk, hiphopThunk } from "../redux/actions";
 import AlbumCard from "./AlbumCard";
+import MainNav from "./MainNav";
+import BottomPlayer from "./BottomPlayer";
 
 const HomePage = () => {
+  const selTrack = useSelector((state) => state.player.selectedTrack);
   const [rockRandomArtists, setRockRandomArtists] = useState([]);
   const [popRandomArtists, setPopRandomArtists] = useState([]);
   const [hiphopRandomArtists, setHiphopRandomArtists] = useState([]);
-
   const dispatch = useDispatch();
   const rockArtists = useSelector((state) => state.home.selections.rockArtists);
   const popArtists = useSelector((state) => state.home.selections.popArtists);
@@ -22,6 +24,9 @@ const HomePage = () => {
     (state) => state.home.selectionsData.hiphopData
   );
 
+  // Serie di fetch via redux action
+  // Picka random 4 artist, se già pickati re-itera il comando (evita cloni), per ognuno fetcha
+
   useEffect(() => {
     while (rockRandomArtists.length < 4) {
       let artist = rockArtists[Math.floor(Math.random() * rockArtists.length)];
@@ -29,8 +34,6 @@ const HomePage = () => {
         rockRandomArtists.push(artist);
       }
     }
-
-    console.log(rockRandomArtists, hiphopRandomArtists, popRandomArtists);
     rockRandomArtists.forEach((el) => dispatch(rockThunk(el)));
   }, []);
   useEffect(() => {
@@ -55,31 +58,21 @@ const HomePage = () => {
   }, []);
 
   const rockPick = rockData[0];
+  const rockPick1 = rockData[1];
+  const rockPick2 = rockData[2];
+  const rockPick3 = rockData[3];
   const popPick = popData[0];
+  const popPick1 = popData[1]; // strano workaround, se non così non funziona...
+  const popPick2 = popData[2]; // Da automatizzare il tutto (array -> map)
+  const popPick3 = popData[3];
   const hiphopPick = hiphopData[0];
+  const hiphopPick1 = hiphopData[1];
+  const hiphopPick2 = hiphopData[2];
+  const hiphopPick3 = hiphopData[3];
+
   return (
     <div className="col-12 col-md-9 offset-md-3 mainPage">
-      <Row>
-        <Col xs={9} lg={11}>
-          <div className="mainLinks d-none d-md-flex">
-            <a className="text-decoration-none" href="#">
-              TRENDING
-            </a>
-            <a className="text-decoration-none" href="#">
-              PODCAST
-            </a>
-            <a className="text-decoration-none" href="#">
-              MOODS AND GENRES
-            </a>
-            <a className="text-decoration-none" href="#">
-              NEW RELEASES
-            </a>
-            <a className="text-decoration-none" href="#">
-              DISCOVER
-            </a>
-          </div>
-        </Col>
-      </Row>
+      <MainNav />
       <Row>
         <Col xs={10}>
           <div id="searchResults" style={{ display: "none" }}>
@@ -96,10 +89,10 @@ const HomePage = () => {
               className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 imgLinks py-3"
               id="rockSection"
             >
-              {rockData.length > 1 && <AlbumCard songInfo={rockPick[0]} />}
-              {rockData.length > 1 && <AlbumCard songInfo={rockPick[1]} />}
-              {rockData.length > 1 && <AlbumCard songInfo={rockPick[2]} />}
-              {rockData.length > 1 && <AlbumCard songInfo={rockPick[3]} />}
+              {rockData.length > 0 && <AlbumCard songInfo={rockPick[0]} />}
+              {rockData.length > 1 && <AlbumCard songInfo={rockPick1[0]} />}
+              {rockData.length > 2 && <AlbumCard songInfo={rockPick2[0]} />}
+              {rockData.length > 3 && <AlbumCard songInfo={rockPick3[0]} />}
             </div>
           </div>
         </Col>
@@ -112,10 +105,10 @@ const HomePage = () => {
               className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 imgLinks py-3"
               id="popSection"
             >
-              {popData.length > 1 && <AlbumCard songInfo={popPick[0]} />}
-              {popData.length > 1 && <AlbumCard songInfo={popPick[1]} />}
-              {popData.length > 1 && <AlbumCard songInfo={popPick[2]} />}
-              {popData.length > 1 && <AlbumCard songInfo={popPick[3]} />}
+              {popData.length > 0 && <AlbumCard songInfo={popPick[0]} />}
+              {popData.length > 1 && <AlbumCard songInfo={popPick1[0]} />}
+              {popData.length > 2 && <AlbumCard songInfo={popPick2[0]} />}
+              {popData.length > 3 && <AlbumCard songInfo={popPick3[0]} />}
             </div>
           </div>
         </Col>
@@ -128,14 +121,15 @@ const HomePage = () => {
               className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 imgLinks py-3"
               id="hipHopSection"
             >
-              {hiphopData.length > 1 && <AlbumCard songInfo={hiphopPick[0]} />}
-              {hiphopData.length > 1 && <AlbumCard songInfo={hiphopPick[1]} />}
-              {hiphopData.length > 1 && <AlbumCard songInfo={hiphopPick[2]} />}
-              {hiphopData.length > 1 && <AlbumCard songInfo={hiphopPick[3]} />}
+              {hiphopData.length > 0 && <AlbumCard songInfo={hiphopPick[0]} />}
+              {hiphopData.length > 1 && <AlbumCard songInfo={hiphopPick1[0]} />}
+              {hiphopData.length > 2 && <AlbumCard songInfo={hiphopPick2[0]} />}
+              {hiphopData.length > 3 && <AlbumCard songInfo={hiphopPick3[0]} />}
             </div>
           </div>
         </Col>
       </Row>
+      {selTrack && <BottomPlayer />}
     </div>
   );
 };

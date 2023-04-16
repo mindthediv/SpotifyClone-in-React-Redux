@@ -3,11 +3,11 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import HomePage from "./components/HomePage";
-import BottomPlayer from "./components/BottomPlayer";
 import AlbumPage from "./components/AlbumPage";
 import ArtistPage from "./components/ArtistPage";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import ResultsPage from "./components/ResultsPage";
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/artist-page/:id" element={<ArtistPage />} />
               <Route path="/album-page/:id" element={<AlbumPage />} />
+              <Route path="/results" element={<ResultsPage />} />
               <Route
                 path="/*"
                 element={
@@ -29,7 +30,6 @@ function App() {
             </Routes>
           </Row>
         </Container>
-        <BottomPlayer />
       </div>
     </BrowserRouter>
   );

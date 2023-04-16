@@ -6,12 +6,14 @@ import { useEffect } from "react";
 import { albumThunk } from "../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Song from "./Song";
+import MainNav from "./MainNav";
+import BottomPlayer from "./BottomPlayer";
 
 const AlbumPage = () => {
   const albumData = useSelector((state) => state.album.album.data);
   const dispatch = useDispatch();
-
   const { id } = useParams();
+  const selTrack = useSelector((state) => state.player.selectedTrack);
 
   useEffect(() => {
     dispatch(albumThunk(id));
@@ -19,27 +21,7 @@ const AlbumPage = () => {
 
   return (
     <Col xs={12} md={9} className="offset-md-3 mainPage">
-      <Row>
-        <Col xs={9} lg={11}>
-          <div className="mainLinks d-none d-md-flex">
-            <a className="text-decoration-none" href="#">
-              TRENDING
-            </a>
-            <a className="text-decoration-none" href="#">
-              PODCAST
-            </a>
-            <a className="text-decoration-none" href="#">
-              MOODS AND GENRES
-            </a>
-            <a className="text-decoration-none" href="#">
-              NEW RELEASES
-            </a>
-            <a className="text-decoration-none" href="#">
-              DISCOVER
-            </a>
-          </div>
-        </Col>
-      </Row>
+      <MainNav />
       <Row>
         <Col md={3} className="pt-5 text-center" id="img-container">
           {albumData && <AlbumArt album={albumData} />}
@@ -47,13 +29,17 @@ const AlbumPage = () => {
 
         <Col md={8} className="p-5">
           <Row>
-            <Col md={10} className="mb-5" id="trackList">
-              {albumData &&
-                albumData.tracks.data.map((el) => <Song track={el} />)}
-            </Col>
+            {albumData && (
+              <Col md={10} className="mb-5" id="trackList">
+                {albumData.tracks.data.map((el) => (
+                  <Song key={el.id} track={el} />
+                ))}
+              </Col>
+            )}
           </Row>
         </Col>
       </Row>
+      {selTrack && <BottomPlayer />}
     </Col>
   );
 };

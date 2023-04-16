@@ -91,6 +91,21 @@ ul {
 }
 
 /* BOTTOM PLAYER SECTION*/
+.playInfo {
+  margin-left: 230px;
+  width: 250px;
+  text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 936px) {
+  .playInfo {
+    margin-left: 2px;
+  }
+}
+
+.heartIcon {
+  color: rgb(60, 211, 60);
+}
 
 .bg-container {
   height: 5.5rem;
@@ -120,11 +135,38 @@ ul {
   color: white;
   background-color: #414141;
   height: 3px;
+  width: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .playBar p {
   margin-bottom: 20px;
   color: white;
+}
+
+.progress-bg {
+  display: inline-block;
+  width: 50%;
+  height: 3px;
+  background-color: #414141;
+  position: relative;
+  margin: 0 1em;
+}
+
+.progress-bar {
+  width: 50%;
+  height: 3px;
+  display: inline-block;
+  background-color: #fff;
+  position: absolute;
+  left: 0;
+}
+
+.trackNow,
+.duration {
+  width: fit-content !important;
 }
 
 /*MAIN PAGE SECTION*/
@@ -174,7 +216,7 @@ ul {
 #artist-tracks {
   color: white;
   font-weight: 700;
-  padding-top: 50px;
+  padding-top: 1em;
 }
 
 .trackHover:hover {

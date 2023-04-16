@@ -11,17 +11,16 @@ const AlbumCard = ({ songInfo }) => {
           to={`/album-page/${songInfo.album.id}`}
           className="text-decoration-none"
         >
-          Album:
           {songInfo.album.title.length < 16
             ? `${songInfo.album.title}`
             : `${songInfo.album.title.substring(0, 16)}...`}
           <br />
         </Link>
         <Link
-          to={`/artist-page/${songInfo.artist.id}`}
+          to={`/artist-page/${songInfo.artist.name}`}
           className="text-decoration-none"
         >
-          Artist: {songInfo.artist.name}
+          {songInfo.artist.name}
         </Link>
       </p>
     </div>

@@ -5,8 +5,11 @@ import { artistThunk } from "../redux/actions";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AlbumCard from "./AlbumCard";
+import MainNav from "./MainNav";
+import BottomPlayer from "./BottomPlayer";
 
 const ArtistPage = () => {
+  const selTrack = useSelector((state) => state.player.selectedTrack);
   const dispatch = useDispatch();
   const { id } = useParams();
   const artistTracks = useSelector((state) => state.artist.artist.data.data);
@@ -15,33 +18,15 @@ const ArtistPage = () => {
     dispatch(artistThunk(id));
   }, []);
   return (
-    <div className="col-12 col-md-9 offset-md-3 mainPage">
-      <Row>
-        <Col xs={9} lg={11}>
-          <div className="mainLinks d-none d-md-flex">
-            <a className="text-decoration-none" href="#">
-              TRENDING
-            </a>
-            <a className="text-decoration-none" href="#">
-              PODCAST
-            </a>
-            <a className="text-decoration-none" href="#">
-              MOODS AND GENRES
-            </a>
-            <a className="text-decoration-none" href="#">
-              NEW RELEASES
-            </a>
-            <a className="text-decoration-none" href="#">
-              DISCOVER
-            </a>
-          </div>
-        </Col>
-      </Row>
+    <Col xs={12} md={9} className="offset-md-3 mainPage">
+      <MainNav />
 
-      <div className="row">
-        <div className="col-12 col-md-10 col-lg-10 mt-5">
-          <h2 className="titleMain">{artistTracks[0].artist.name}</h2>
-          <div id="followers"></div>
+      <Row>
+        <Col xs={12} md={10} className="mt-5">
+          {artistTracks && (
+            <h2 className="titleMain">{artistTracks[0].artist.name}</h2>
+          )}
+          <div id="followers">{}</div>
           <div className="d-flex justify-content-center" id="button-container">
             <button
               className="btn btn-success mr-2 mainButton "
@@ -56,10 +41,10 @@ const ArtistPage = () => {
               FOLLOW
             </button>
           </div>
-        </div>
-      </div>
-      <div className="row mb-3">
-        <div className="col-10 offset-1 col-md-10 col-lg-10 p-0">
+        </Col>
+      </Row>
+      <Row className="mb-3">
+        <Col xs={10} className="offset-1 p-0">
           <div className="mt-4 d-flex justify-content-start">
             <h2 className="text-white font-weight-bold">Tracks</h2>
           </div>
@@ -69,9 +54,10 @@ const ArtistPage = () => {
                 artistTracks.map((el) => <AlbumCard songInfo={el} />)}
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+      {selTrack && <BottomPlayer />}
+    </Col>
   );
 };
 export default ArtistPage;
